@@ -1,0 +1,63 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions 
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --if-present
+    - run: npm test
+- nom : Configurer Java JDK
+  utilise : actions/setup-java@v2.4.0
+  avec:
+    # La version Java à configurer. Prend une version Java entière ou partielle. Voir des exemples de syntaxe prise en charge dans le fichier README
+    version java : 
+    # Distribution Java. Voir la liste des distributions prises en charge dans le fichier README
+    Distribution: 
+    # Le type de paquet (jdk, jre, jdk+fx, jre+fx)
+    java-package : # facultatif, la valeur par défaut est jdk
+    # L'architecture du package
+    architecture : # facultatif, la valeur par défaut est x64
+    # Chemin vers où se trouve le JDK compressé
+    jdkFile : # facultatif
+    # Définissez cette option si vous souhaitez que l'action recherche la dernière version disponible qui satisfait les spécifications de version
+    check-latest : # facultatif
+    # ID du référentiel distributionManagement dans le fichier pom.xml. La valeur par défaut est « github »
+    server-id : # facultatif, la valeur par défaut est github
+    # Nom de la variable d'environnement pour le nom d'utilisateur pour l'authentification au référentiel Apache Maven. La valeur par défaut est $GITHUB_ACTOR
+    server-username : # facultatif, la valeur par défaut est GITHUB_ACTOR
+    # Nom de la variable d'environnement pour le mot de passe ou le jeton d'authentification auprès du référentiel Apache Maven. La valeur par défaut est $GITHUB_TOKEN
+    server-password : # facultatif, la valeur par défaut est GITHUB_TOKEN
+    # Chemin vers lequel le fichier settings.xml sera écrit. La valeur par défaut est ~/.m2.
+    chemin-paramètres : # facultatif
+    # Écrasez le fichier settings.xml s'il existe. La valeur par défaut est « vrai ».
+    overwrite-settings : # facultatif, la valeur par défaut est true
+    # Clé privée GPG à importer. La valeur par défaut est une chaîne vide.
+    gpg-private-key : # facultatif
+    # Nom de la variable d'environnement pour la phrase secrète de la clé privée GPG. La valeur par défaut est $GPG_PASSPHRASE.
+    gpg-passphrase : # facultatif
+    # Nom de la plateforme de build pour mettre en cache les dépendances. Cela peut être "maven" ou "gradle".
+    cache : # facultatif
+    # Solution de contournement pour transmettre le statut du travail à l'étape de publication du travail. Cette variable n'est pas destinée à un réglage manuel
+    job-status : # facultatif, la valeur par défaut est ${{ job.status }}
